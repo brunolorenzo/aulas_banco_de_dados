@@ -15,5 +15,5 @@ if __name__ == '__main__':
         criado_em DATE NOT NULL
     );
     """)
-
+    
     conn.close()
