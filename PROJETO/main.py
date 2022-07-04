@@ -1,59 +1,43 @@
-from assistente import pega_comando
-from classes import Usuario
-lista = []
-lista_cpf = []
-lista_email = []
-nome = 'bruno'
-CPF = '123'
-email_= 'lorenzo'
-idade = '60'
-senha = '456'
+#Alunos: Bruno Lorenzo, Eduardo Peron, Enzo Salamão, Guilherme de Sá
 
-usuarios = Usuario(nome, idade, email_, CPF, senha)
-lista.append(usuarios)
-while(True):
+from classe.classe_dao import UsuarioDAO
+from colorama import Fore, Style
+from banco_de_dados import utils
+from banco_de_dados import criar_bd
+import os
 
-    opcao = input("\n-------------- Menu Principal --------------\n\n1 - Fazer Login\n2 - Recuperar Senha\n3 - Novo Usuário\n4 – Sair\n\nOpção: ")
+if __name__ == '__main__':
+    
+    bd_path = 'Usuarios.db'
+    
+    if not os.path.exists(bd_path):
+        criar_bd.criar_bd_usuario(bd_path)
 
-    if opcao == '1':
-        
-        cpf = input("Digite o seu cpf: ")
-        for k in range(len(lista)):
-            if cpf == lista[k]._cpf:
-                senha = input("Digite a sua senha: ")
-                if senha == lista[k]._senha:
-                    print('\nLogin efetuado com sucesso!')
-                    pega_comando(lista[k]._nome)
-                else:
-                    print("\nSenha incorreta!")
+    usuario_dao = UsuarioDAO(bd_path)
 
-            elif k == len(lista)-1:
-                print('\nCPF invalido')
+    while True:
 
-    #elif opcao == 2:
-    #    pass
+        print('\n\n---------------- Menu -----------------')
 
-    elif opcao == '3':
-        # nome = input('Digite o nome: ')
-        # CPF = input('Digite o CPF: ')
-        # email_ = input('Digite o email: ')
-        # idade = input('Digite a idade: ')
-        # senha = input('Digite a senha: ')
-        nome = 'guilherme'
-        CPF = '333'
-        email_= '898'
-        idade = '20'
-        senha = '789'
+        print('\n  1 – Fazer Login')
+        print('  2 – Recuperar Senha')
+        print('  3 – Novo Usuário')
+        print('  4 – Sair')
 
+        opcao = input('\nDigite a opção desejada: ')
 
+        if opcao == '1':
+            utils.login_usuario(usuario_dao)
+        elif opcao == '2':
+            utils.recuperar_senha(usuario_dao)
+        elif opcao == '3':
+            print('\n\n  Opção 3')
+            utils.cadastrar_usuario(usuario_dao)
+        elif opcao == '4':
+            break
+        else:
+            print(Fore.RED + '\n  Opção Inválida!') 
+            print(Style.RESET_ALL)
 
-        usuarios = Usuario(nome, idade, email_, CPF, senha)
-        lista.append(usuarios)
-        print(usuarios._nome)
-
-    elif opcao == '4':
-        break
-
-    else:
-        print('\nCódigo inválido, digite novamente!')
-        continue
+    print(Fore.LIGHTYELLOW_EX + '\n  Sistema Finalizado ...')
+    print(Style.RESET_ALL)
